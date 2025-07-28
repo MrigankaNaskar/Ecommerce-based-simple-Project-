@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Complete E-Commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #667eea;
+            text-decoration: underline;
+            border: none;
+            padding: 8px 16px;
+        }
+
+        .btn-link:hover {
+            color: #764ba2;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-info {
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .security-info {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #155724;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cart-total {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: right;
+            padding: 20px 0;
+            border-top: 2px solid #eee;
+            margin-top: 20px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-processing {
+            background: #ffeaa7;
+            color: #fdcb6e;
+        }
+
+        .status-completed {
+            background: #55efc4;
+            color: #00b894;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover,
+        .payment-method.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .footer-links {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .footer-links a {
+            margin: 0 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">🛍️ TechStore</div>
+                <div class="nav-buttons">
+                    <button class="btn btn-primary" onclick="showSection('browse')">Browse Products</button>
+                    <button class="btn btn-secondary" onclick="showSection('cart')">
+                        Shopping Cart <span class="cart-info" id="cartCount">0</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSection('login')">Login/Register</button>
+                    <button class="btn btn-secondary" onclick="showSection('admin')">Admin Panel</button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Browse Products Section -->
+            <section id="browse" class="section active">
+                <h2>🛍️ Browse Products</h2>
+                <input type="text" class="form-control search-bar" placeholder="Search products..." id="searchInput" onkeyup="searchProducts()">
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically loaded here -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="https://techstore.com/categories" class="btn btn-secondary">View All Categories</a>
+                    <a href="https://techstore.com/deals" class="btn btn-secondary">Special Deals</a>
+                    <a href="https://techstore.com/wishlist" class="btn btn-secondary">💖 Wishlist</a>
+                </div>
+            </section>
+
+            <!-- Shopping Cart Section -->
+            <section id="cart" class="section">
+                <h2>🛒 Shopping Cart</h2>
+                <div id="cartItems">
+                    <p>Your cart is empty</p>
+                </div>
+                <div class="cart-total" id="cartTotal">Total: $0.00</div>
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="showSection('checkout')" id="checkoutBtn" style="display:none;">🔒 Proceed to Secure Checkout</button>
+                    <br><br>
+                    <a href="https://techstore.com/shipping-info" class="btn-link">📦 Shipping Information</a>
+                    <a href="https://techstore.com/return-policy" class="btn-link">↩️ Return Policy</a>
+                </div>
+            </section>
+
+            <!-- Checkout Section -->
+            <section id="checkout" class="section">
+                <h2>🔒 Secure Checkout</h2>
+                <div class="secure-badge">
+                    🔐 SSL Secured - Your information is protected with 256-bit encryption
+                </div>
+                <form id="checkoutForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h3>📦 Shipping Information</h3>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" class="form-control" required>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <a href="https://techstore.com/address-book" class="btn-link">📋 Saved Addresses</a>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>💳 Payment Method</h3>
+                            <div class="security-info">
+                                <strong>🛡️ Secure Payment Processing</strong><br>
+                                All transactions are encrypted and processed through our secure payment gateway
+                            </div>
+                            <div class="payment-methods">
+                                <div class="payment-method selected" data-method="card">
+                                    💳 Credit Card
+                                </div>
+                                <div class="payment-method" data-method="paypal" onclick="window.open('https://paypal.com/checkout', '_blank')">
+                                    🅿️ PayPal
+                                </div>
+                                <div class="payment-method" data-method="crypto">
+                                    ₿ Crypto
+                                </div>
+                                <div class="payment-method" data-method="apple" onclick="window.open('https://apple.com/apple-pay', '_blank')">
+                                    🍎 Apple Pay
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Expiry</label>
+                                    <input type="text" class="form-control" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="text" class="form-control" placeholder="123">
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <a href="https://techstore.com/payment-methods" class="btn-link">💰 Saved Payment Methods</a>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                        🔐 Complete Secure Order
+                    </button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <small>Protected by <a href="https://ssl.com/certificates" class="btn-link">SSL Certificate</a> | 
+                        <a href="https://techstore.com/security" class="btn-link">Security Policy</a></small>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Login/Register Section -->
+            <section id="login" class="section">
+                <h2>🔐 Login / Register</h2>
+                <div class="security-info">
+                    <strong>🛡️ Secure Account Access</strong><br>
+                    Your account is protected with advanced security features and encrypted data storage
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <div>
+                        <h3>🔑 Login</h3>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">🔐 Secure Login</button>
+                            <br><br>
+                            <a href="https://techstore.com/forgot-password" class="btn-link">🔑 Forgot Password?</a><br>
+                            <a href="https://techstore.com/two-factor-auth" class="btn-link">🔐 Enable 2FA</a>
+                        </form>
+                    </div>
+                    <div>
+                        <h3>📝 Register</h3>
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">🔒 Create Secure Account</button>
+                            <br><br>
+                            <small>By registering, you agree to our <a href="https://techstore.com/terms-of-service" class="btn-link">Terms of Service</a> and <a href="https://techstore.com/privacy-policy" class="btn-link">Privacy Policy</a></small>
+                        </form>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <h4>🔐 Social Login Options</h4>
+                    <a href="https://accounts.google.com/oauth/authorize" class="btn btn-secondary">🔍 Google</a>
+                    <a href="https://facebook.com/login" class="btn btn-secondary">📘 Facebook</a>
+                    <a href="https://github.com/login/oauth/authorize" class="btn btn-secondary">🐙 GitHub</a>
+                </div>
+            </section>
+
+            <!-- Admin Panel Section -->
+            <section id="admin" class="section">
+                <h2>🔧 Admin Panel</h2>
+                <div class="security-info">
+                    <strong>🔒 Secure Admin Access</strong><br>
+                    Administrative functions are protected with enhanced security protocols
+                </div>
+                
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$45,678</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">567</div>
+                        <div class="stat-label">Products</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8,901</div>
+                        <div class="stat-label">Customers</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h3>➕ Add New Product</h3>
+                        <form id="addProductForm">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="number" class="form-control" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="clothing">Clothing</option>
+                                    <option value="books">Books</option>
+                                    <option value="home">Home & Garden</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">📦 Add Product</button>
+                        </form>
+                        <div style="margin-top: 20px;">
+                            <a href="https://admin.techstore.com/products" class="btn btn-secondary">📋 Manage Products</a>
+                            <a href="https://admin.techstore.com/inventory" class="btn btn-secondary">📊 Inventory</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>📋 Recent Orders</h3>
+                        <div id="adminOrders">
+                            <div class="order-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Order #1001</strong><br>
+                                        Customer: John Doe<br>
+                                        Total: $299.99<br>
+                                        <a href="https://tracking.techstore.com/order/1001" class="btn-link" target="_blank">🚚 Track Order</a>
+                                    </div>
+                                    <span class="order-status status-processing">Processing</span>
+                                </div>
+                            </div>
+                            <div class="order-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Order #1002</strong><br>
+                                        Customer: Jane Smith<br>
+                                        Total: $149.99<br>
+                                        <a href="https://admin.techstore.com/orders/1002" class="btn-link" target="_blank">📋 View Details</a>
+                                    </div>
+                                    <span class="order-status status-completed">Completed</span>
+                                </div>
+                            </div>
+                            <div class="order-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Order #1003</strong><br>
+                                        Customer: Mike Johnson<br>
+                                        Total: $79.99<br>
+                                        <a href="https://tracking.techstore.com/order/1003" class="btn-link" target="_blank">🚚 Track Order</a>
+                                    </div>
+                                    <span class="order-status status-processing">Processing</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <a href="https://admin.techstore.com/orders" class="btn btn-secondary" target="_blank">📋 View All Orders</a>
+                            <a href="https://analytics.techstore.com/dashboard" class="btn btn-secondary" target="_blank">📊 Analytics Dashboard</a>
+                            <a href="https://admin.techstore.com/customers" class="btn btn-secondary" target="_blank">👥 Customer Management</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer with HTTPS Links -->
+        <footer class="footer-links">
+            <div style="margin-bottom: 15px;">
+                <strong>🔗 Quick Links</strong>
+            </div>
+            <a href="https://techstore.com/about-us">About Us</a>
+            <a href="https://techstore.com/contact">Contact Support</a>
+            <a href="https://techstore.com/faq">FAQ</a>
+            <a href="https://techstore.com/shipping">Shipping Info</a>
+            <a href="https://techstore.com/returns">Returns</a>
+            <br><br>
+            <a href="https://techstore.com/privacy-policy">Privacy Policy</a>
+            <a href="https://techstore.com/terms-of-service">Terms of Service</a>
+            <a href="https://techstore.com/security">Security</a>
+            <a href="https://techstore.com/cookies">Cookie Policy</a>
+            <br><br>
+            <div style="margin-top: 15px;">
+                <strong>🌐 Follow Us:</strong>
+                <a href="https://facebook.com/techstore">Facebook</a>
+                <a href="https://twitter.com/techstore">Twitter</a>
+                <a href="https://instagram.com/techstore">Instagram</a>
+                <a href="https://linkedin.com/company/techstore">LinkedIn</a>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                🔒 All connections secured with SSL/TLS encryption
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Database simulation (in real app, this would be server-side)
+        let products = [
+            { id: 1, name: "Wireless Headphones", price: 99.99, category: "electronics", emoji: "🎧", url: "https://techstore.com/products/wireless-headphones" },
+            { id: 2, name: "Smart Watch", price: 199.99, category: "electronics", emoji: "⌚", url: "https://techstore.com/products/smart-watch" },
+            { id: 3, name: "Laptop Backpack", price: 49.99, category: "accessories", emoji: "🎒", url: "https://techstore.com/products/laptop-backpack" },
+            { id: 4, name: "Gaming Mouse", price: 79.99, category: "electronics", emoji: "🖱️", url: "https://techstore.com/products/gaming-mouse" },
+            { id: 5, name: "Coffee Mug", price: 14.99, category: "home", emoji: "☕", url: "https://techstore.com/products/coffee-mug" },
+            { id: 6, name: "Bluetooth Speaker", price: 129.99, category: "electronics", emoji: "🔊", url: "https://techstore.com/products/bluetooth-speaker" },
+            { id: 7, name: "Phone Case", price: 24.99, category: "accessories", emoji: "📱", url: "https://techstore.com/products/phone-case" },
+            { id: 8, name: "Desk Lamp", price: 39.99, category: "home", emoji: "💡", url: "https://techstore.com/products/desk-lamp" }
+        ];
+
+        let cart = [];
+        let currentUser = null;
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Product browsing
+        function displayProducts(productsToShow = products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = productsToShow.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.emoji}</div>
+                    <div class="product-title">${product.name}</div>
+                    <div class="product-price">$${product.price}</div>
+                    <button class="btn btn-primary" onclick="addToCart(${product.id})">
+                        🛒 Add to Cart
+                    </button>
+                    <br><br>
+                    <a href="${product.url}" class="btn-link" target="_blank">🔍 View Details</a>
+                    <a href="https://reviews.techstore.com/product/${product.id}" class="btn-link" target="_blank">⭐ Reviews</a>
+                </div>
+            `).join('');
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(product => 
+                product.name.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query)
+            );
+            displayProducts(filtered);
+        }
+
+        // Cart functionality
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartDisplay();
+            showNotification(`${product.name} added to cart!`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartDisplay();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartDisplay();
+                }
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your cart is empty</p>';
+                checkoutBtn.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            ${item.price} × ${item.quantity}<br>
+                            <a href="${item.url}" class="btn-link" target="_blank">🔍 Product Details</a>
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span style="margin: 0 10px;">${item.quantity}</span>
+                            <button class="btn btn-secondary" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            <button class="btn btn-secondary" onclick="removeFromCart(${item.id})" style="margin-left: 10px;">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+                checkoutBtn.style.display = 'block';
+            }
+            
+            cartTotal.textContent = `Total: ${totalPrice.toFixed(2)}`;
+        }
+
+        // Payment methods
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    if (!this.onclick) {
+                        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                        this.classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        // Form submissions
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            processOrder();
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('🔐 Login successful! Redirecting to secure dashboard...');
+            currentUser = { name: 'John Doe', email: 'john@example.com' };
+            // Simulate redirect to user dashboard
+            setTimeout(() => {
+                window.open('https://account.techstore.com/dashboard', '_blank');
+            }, 1500);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('✅ Registration successful! Welcome email sent to your inbox.');
+            // Simulate email verification
+            setTimeout(() => {
+                window.open('https://account.techstore.com/verify-email', '_blank');
+            }, 2000);
+        });
+
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newProduct = {
+                id: products.length + 1,
+                name: formData.get('name') || e.target.querySelector('input[type="text"]').value,
+                price: parseFloat(e.target.querySelector('input[type="number"]').value),
+                category: e.target.querySelector('select').value,
+                emoji: '📦',
+                url: `https://techstore.com/products/${e.target.querySelector('input[type="text"]').value.toLowerCase().replace(/\s+/g, '-')}`
+            };
+            products.push(newProduct);
+            displayProducts();
+            showNotification('📦 Product added successfully! Now live on the store.');
+            e.target.reset();
+            
+            // Simulate product management redirect
+            setTimeout(() => {
+                window.open('https://admin.techstore.com/products', '_blank');
+            }, 2000);
+        });
+
+        function processOrder() {
+            if (cart.length === 0) {
+                showNotification('⚠️ Your cart is empty!');
+                return;
+            }
+            
+            // Simulate payment processing
+            showNotification('🔄 Processing secure payment...');
+            
+            setTimeout(() => {
+                const orderNumber = Math.floor(Math.random() * 10000) + 1000;
+                showNotification(`✅ Order #${orderNumber} placed successfully! Confirmation sent to your email.`);
+                
+                // Simulate order confirmation and tracking
+                setTimeout(() => {
+                    window.open(`https://tracking.techstore.com/order/${orderNumber}`, '_blank');
+                }, 1000);
+                
+                cart = [];
+                updateCartDisplay();
+                showSection('browse');
+            }, 3000);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+                word-wrap: break-word;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProducts();
+            updateCartDisplay();
+            
+            // Simulate loading external resources
+            console.log('🔗 Loading secure resources...');
+            console.log('✅ SSL Certificate validated');
+            console.log('✅ Payment gateway connected');
+            console.log('✅ Database connection secured');
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Security features simulation
+        function initSecurity() {
+            console.log('🔒 Initializing security features...');
+            console.log('✅ HTTPS enforced');
+            console.log('✅ CSP headers applied');
+            console.log('✅ XSS protection enabled');
+            console.log('✅ CSRF tokens generated');
+        }
+
+        // Call security initialization
+        initSecurity();
+    </script>
+</body>
+</html>
